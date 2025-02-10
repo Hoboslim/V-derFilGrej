@@ -4,7 +4,9 @@
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello, World!");
+            //ReadFiles.ReadFiles.ReadFile();
+            //ExtractInformation.MedelTemp.ExtractMedelTemp();
+            ExtractInformation.WarmestColdest.WarmCold();
         }
     }
 }
