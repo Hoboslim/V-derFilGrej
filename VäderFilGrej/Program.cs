@@ -16,6 +16,7 @@ namespace VäderFilGrej
             //data.Mold();
             //data.DryWet();
             data.Fall();
+            data.vinter();
         }
     }
 }

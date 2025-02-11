@@ -133,7 +133,9 @@ namespace VäderFilGrej.ExtractInformation
         {
             var tempPerWeek = TempList();
             int daysInRow = 0;
+           
             string day1 = "ingenDag";
+            
 
             foreach (var entry in tempPerWeek)
             {
@@ -149,17 +151,51 @@ namespace VäderFilGrej.ExtractInformation
 
                     daysInRow++;
 
-                    if (daysInRow == 5) 
+                    if (daysInRow == 5)
                     {
                         Console.WriteLine("hösten börjar den: " + day1);
                         return;
                     }
                 }
-                else 
+                else
                 {
                     daysInRow = 0;
                 }
+
             }
         }
+        public void vinter()
+        {
+            var tempPerWeek = TempList();
+            int daysInRow2 = 0;
+            string day2 = "ingenDag";
+            foreach (var entry in tempPerWeek)
+            {
+                var temp = (entry.Value.temp.Sum() / entry.Value.temp.Count);
+                if (temp <= 2)
+                {
+                    if (daysInRow2 == 0)
+                    {
+                        day2 = entry.Key.ToString();
+                    }
+
+                    daysInRow2++;
+
+                    if (daysInRow2 == 5)
+                    {
+                        Console.WriteLine("Mild vinter börjar: " + day2);
+                        return;
+                    }
+
+                }
+                else
+                {
+                    daysInRow2 = 0;
+                    //Console.WriteLine("det blev mild vinter");
+
+                }
+            }
+        }
+
     }
 }
