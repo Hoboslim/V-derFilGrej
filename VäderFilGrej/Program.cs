@@ -11,12 +11,12 @@ namespace VäderFilGrej
             //ExtractInformation.WarmestColdest.WarmCold();
             var data = new GetData();
 
-            //data.WarmCold();
+            data.WarmCold();
             //data.MedTemp();
             //data.Mold();
             //data.DryWet();
-            data.Fall();
-            data.vinter();
+            //data.Fall();
+            //data.vinter();
         }
     }
 }

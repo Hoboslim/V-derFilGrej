@@ -12,17 +12,33 @@ namespace VäderFilGrej.ExtractInformation
     {
         public Dictionary<string, (List<double> temp, List<double> humidity)> TempList()
         {
-            string[] lines = File.ReadAllLines(@"C:\Users\n01re\Source\Repos\V-derFilGrej\VäderFilGrej\FileReader\tempdata5.txt");
+            string[] lines = File.ReadAllLines(@"C:\Users\noelb\Desktop\System24\Filer\tempdata5-medfel.txt");
 
             string pattern = @"(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})\s(?<time>\d{2}:\d{2}:\d{2}),(?<plats>\w+),(?<temp>\d+\.\d+),(?<humidity>\d+)";
 
             Dictionary<string, (List<double> tempList, List<double> humidityList)> tempPerMonth = new Dictionary<string, (List<double>, List<double>)>();
 
+            Console.WriteLine("Tryck X för att visa info inomhus ");
+            Console.WriteLine("Tryck valfri knapp för att se info utomhus");
+
+            var key = Console.ReadKey(true);
+
+            string val = null;
+
+            if (key.Key == ConsoleKey.X)
+            {
+                val = "Inne";
+            }
+            else
+            {
+                val = "Ute";
+            }
+
             foreach (string line in lines)
             {
                 Match temp = Regex.Match(line, pattern);
 
-                if (temp.Success && temp.Groups["plats"].ToString() == "Ute")
+                if (temp.Success && temp.Groups["plats"].ToString() == val)
                 {
                     if (temp.Groups["month"].ToString() == "05" || temp.Groups["month"].ToString() == "01")
                     {
@@ -67,16 +83,20 @@ namespace VäderFilGrej.ExtractInformation
                     risk = 0;
                 }
 
-                mold.Add(entry.Key, risk);
+                if (risk > 0)
+                {
+                  mold.Add(entry.Key, risk);
+                }
             }
 
+            if (!mold.Any())
+            {
+                Console.WriteLine("Det finns ingen risk för mögel ");
+            }
 
             foreach (var entry in mold.OrderBy(entry => entry.Value))
-            {
-                if (entry.Value > 0)
-                {
-                    Console.WriteLine($"Dag {entry.Key} risk: {entry.Value.ToString("F2")}");
-                }
+            { 
+               Console.WriteLine($"Dag {entry.Key} risk: {entry.Value.ToString("F2")}");
             }
         }
         public void DryWet()
