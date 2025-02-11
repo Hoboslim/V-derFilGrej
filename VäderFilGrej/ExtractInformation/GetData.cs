@@ -10,7 +10,9 @@ namespace VäderFilGrej.ExtractInformation
 {
     internal class GetData
     {
-        public Dictionary<string, (List<double> temp, List<double> humidity)> TempList()
+        bool meny = false;
+
+        public Dictionary<string, (List<double> temp, List<double> humidity)> TempList(bool meny)
         {
             string[] lines = File.ReadAllLines(@"C:\Users\noelb\Desktop\System24\Filer\tempdata5-medfel.txt");
 
@@ -18,18 +20,28 @@ namespace VäderFilGrej.ExtractInformation
 
             Dictionary<string, (List<double> tempList, List<double> humidityList)> tempPerMonth = new Dictionary<string, (List<double>, List<double>)>();
 
-            Console.WriteLine("Tryck X för att visa info inomhus ");
-            Console.WriteLine("Tryck valfri knapp för att se info utomhus");
-
-            var key = Console.ReadKey(true);
-
             string val = null;
 
-            if (key.Key == ConsoleKey.X)
+            if (meny == true)
             {
-                val = "Inne";
+                Console.WriteLine("Tryck X för att visa info inomhus ");
+                Console.WriteLine("Tryck valfri knapp för att se info utomhus");
+
+                var key = Console.ReadKey(true);
+
+                
+
+                if (key.Key == ConsoleKey.X)
+                {
+                    val = "Inne";
+                }
+                else
+                {
+                    val = "Ute";
+                }
+
             }
-            else
+            else 
             {
                 val = "Ute";
             }
@@ -65,10 +77,11 @@ namespace VäderFilGrej.ExtractInformation
         }
         public void Mold()
         {
+            meny = true;
             double risk;
             Dictionary<string, double> mold = new Dictionary<string, double>(); 
 
-            var tempPerday = TempList();
+            var tempPerday = TempList(meny);
             foreach (var entry in tempPerday)
             {
                 var hum = (entry.Value.humidity.Sum() / entry.Value.humidity.Count);
@@ -101,7 +114,8 @@ namespace VäderFilGrej.ExtractInformation
         }
         public void DryWet()
         {
-            var tempDay = TempList();
+            meny = true;
+            var tempDay = TempList(meny);
 
             var groupedSum = tempDay
                 .GroupBy(x => x.Key)
@@ -119,7 +133,8 @@ namespace VäderFilGrej.ExtractInformation
         }
         public void WarmCold()
         {
-            var tempPerDay = TempList();
+            meny = true;
+            var tempPerDay = TempList(meny);
 
                 var groupedSum = tempPerDay
                 .GroupBy(x => x.Key)
@@ -136,7 +151,8 @@ namespace VäderFilGrej.ExtractInformation
         }
         public void MedTemp()
         {
-            var tempPerMonth = TempList();
+            meny = true;
+            var tempPerMonth = TempList(meny);
 
             foreach(var entry in tempPerMonth)
             {
@@ -151,7 +167,8 @@ namespace VäderFilGrej.ExtractInformation
 
         public void Fall()
         {
-            var tempPerWeek = TempList();
+            meny = false;
+            var tempPerWeek = TempList(meny);
             int daysInRow = 0;
            
             string day1 = "ingenDag";
@@ -186,7 +203,8 @@ namespace VäderFilGrej.ExtractInformation
         }
         public void vinter()
         {
-            var tempPerWeek = TempList();
+            meny = false;
+            var tempPerWeek = TempList(meny);
             int daysInRow2 = 0;
             string day2 = "ingenDag";
             foreach (var entry in tempPerWeek)
