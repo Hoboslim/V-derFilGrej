@@ -1,4 +1,6 @@
-﻿namespace VäderFilGrej
+﻿using VäderFilGrej.ExtractInformation;
+
+namespace VäderFilGrej
 {
     internal class Program
     {
@@ -6,7 +8,13 @@
         {
             //ReadFiles.ReadFiles.ReadFile();
             //ExtractInformation.MedelTemp.ExtractMedelTemp();
-            ExtractInformation.WarmestColdest.WarmCold();
+            //ExtractInformation.WarmestColdest.WarmCold();
+            var data = new GetData();
+
+            //data.WarmCold();
+            //data.MedTemp();
+            data.Mold();
+            //data.DryWet();
         }
     }
 }

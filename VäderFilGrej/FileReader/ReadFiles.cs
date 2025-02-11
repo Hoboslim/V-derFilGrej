@@ -22,6 +22,11 @@ namespace VäderFilGrej.ReadFiles
             }
         }
 
+        public static void FileGrouping()
+        {
+
+        }
+
     }
 
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -12,7 +13,7 @@ namespace VäderFilGrej.ExtractInformation
     {
         public static void WarmCold()
         {
-            string[] lines = File.ReadAllLines(@"C:\Users\noelb\Desktop\System24\Filer\tempdata5-medfel.txt");
+            string[] lines = File.ReadAllLines(@"C:\Users\Johan\V-derFilGrej\VäderFilGrej\FileReader\tempdata5.txt");
 
             string pattern = @"(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})\s(?<time>\d{2}:\d{2}:\d{2}),(?<plats>\w+),(?<temp>\d+\.\d+),(?<humidity>\d+)";
 
@@ -32,7 +33,7 @@ namespace VäderFilGrej.ExtractInformation
                     {
                         string yearMonth = $"{temp.Groups["year"].Value}-{temp.Groups["month"].Value}-{temp.Groups["day"].Value}";
 
-                        double tempCheck = double.Parse(temp.Groups["temp"].Value);
+                        double tempCheck = double.Parse(temp.Groups["temp"].Value, CultureInfo.InvariantCulture);
 
                         if (!tempPerDay.ContainsKey(yearMonth))
                         {
