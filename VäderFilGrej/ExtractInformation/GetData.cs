@@ -12,7 +12,7 @@ namespace VäderFilGrej.ExtractInformation
     {
         public Dictionary<string, (List<double> temp, List<double> humidity)> TempList()
         {
-            string[] lines = File.ReadAllLines(@"C:\Users\Johan\V-derFilGrej\VäderFilGrej\FileReader\tempdata5.txt");
+            string[] lines = File.ReadAllLines(@"C:\Users\n01re\Source\Repos\V-derFilGrej\VäderFilGrej\FileReader\tempdata5.txt");
 
             string pattern = @"(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})\s(?<time>\d{2}:\d{2}:\d{2}),(?<plats>\w+),(?<temp>\d+\.\d+),(?<humidity>\d+)";
 
@@ -125,7 +125,40 @@ namespace VäderFilGrej.ExtractInformation
 
                 
                 var hum = (entry.Value.humidity.Sum() / entry.Value.humidity.Count);
-                var temp = (entry.Value.temp.Sum() / entry.Value.temp.Count); 
+                
+            }
+        }
+
+        public void Fall()
+        {
+            var tempPerWeek = TempList();
+            int daysInRow = 0;
+            string day1 = "ingenDag";
+
+            foreach (var entry in tempPerWeek)
+            {
+                var temp = (entry.Value.temp.Sum() / entry.Value.temp.Count);
+
+
+                if (temp < 10)
+                {
+                    if (daysInRow == 0)
+                    {
+                        day1 = entry.Key.ToString();
+                    }
+
+                    daysInRow++;
+
+                    if (daysInRow == 5) 
+                    {
+                        Console.WriteLine("hösten börjar den: " + day1);
+                        return;
+                    }
+                }
+                else 
+                {
+                    daysInRow = 0;
+                }
             }
         }
     }

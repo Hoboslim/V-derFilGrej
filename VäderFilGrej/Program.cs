@@ -13,8 +13,9 @@ namespace VäderFilGrej
 
             //data.WarmCold();
             //data.MedTemp();
-            data.Mold();
+            //data.Mold();
             //data.DryWet();
+            data.Fall();
         }
     }
 }
