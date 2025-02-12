@@ -38,7 +38,7 @@ namespace VäderFilGrej
             {
                 var data = new GetData();
                 Console.WriteLine("Vilken data vill du se?");
-                Console.WriteLine("[1]Varmt till kallt [2]medel temp [3]Mögel [4]Tort till blött [5]Metro höst [6]Metro vinter [7]Sök [esc]Tillbacka");
+                Console.WriteLine("[1]Varmt till kallt [2]medel temp [3]Mögel [4]Tort till blött [5]Metro höst [6]Metro vinter [7]Sök [8]Humidex [esc]Tillbacka");
 
 
                 var key = Console.ReadKey(true);
@@ -66,6 +66,9 @@ namespace VäderFilGrej
                         break;
                     case ConsoleKey.D7:
                         data.Search();
+                        break;
+                    case ConsoleKey.D8:
+                        data.humIdex();
                         break;
                     case ConsoleKey.Escape:
                         return;

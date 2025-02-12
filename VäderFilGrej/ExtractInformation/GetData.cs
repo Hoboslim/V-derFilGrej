@@ -16,7 +16,8 @@ namespace VäderFilGrej.ExtractInformation
         public Dictionary<string, (List<double> temp, List<double> humidity)> TempList(bool meny)
         {
             //string[] lines = File.ReadAllLines(@"C:\Users\noelb\Desktop\System24\Filer\tempdata5-medfel.txt");
-            string[] lines = File.ReadAllLines(@"C:\Users\Johan\V-derFilGrej\VäderFilGrej\FileReader\tempdata5.txt");
+            //string[] lines = File.ReadAllLines(@"C:\Users\Johan\V-derFilGrej\VäderFilGrej\FileReader\tempdata5.txt");
+            string[] lines = File.ReadAllLines(@"C:\Users\n01re\Source\Repos\V-derFilGrej\VäderFilGrej\FileReader\tempdata5.txt");
 
             string pattern = @"(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})\s(?<time>\d{2}:\d{2}:\d{2}),(?<plats>\w+),(?<temp>\d+\.\d+),(?<humidity>\d+)";
 
@@ -181,7 +182,7 @@ namespace VäderFilGrej.ExtractInformation
                    $" Luftfuktighet: {(entry.Value.humidity.Sum() / entry.Value.humidity.Count).ToString("F2")}");
 
                 
-                var hum = (entry.Value.humidity.Sum() / entry.Value.humidity.Count);
+                
                 
             }
         }
@@ -255,6 +256,43 @@ namespace VäderFilGrej.ExtractInformation
                 }
             }
         }
+        public void humIdex() 
+        {
+            var humiIndex = TempList(false);
+            var list = new Dictionary<string, double>();
+            foreach(var entry in humiIndex) 
+            {
+                var hum = (entry.Value.humidity.Sum() / entry.Value.humidity.Count);
+                var temp = (entry.Value.temp.Sum() / entry.Value.temp.Count);
+                var humidIndex = CalculateHumidex(temp, hum);
+                
+                list.Add(entry.Key, humidIndex);
 
+            }
+
+            var top10 = list.OrderByDescending(ex => ex.Value).Take(10);
+            var best5 = top10.OrderBy(ex => ex.Value).Take(5);
+            var bottom5 = list.OrderBy(ex => ex.Value).Take(5);
+
+            Console.WriteLine("Bekvämaste Dagarna");
+            foreach (var entry in best5)
+            {
+                Console.WriteLine($"{entry.Key}, Humidex {entry.Value.ToString("F2")}" );
+            }
+            Console.WriteLine("Obekvemäste dagarna");
+            foreach (var entry in bottom5) 
+            {
+                Console.WriteLine($"{entry.Key}, Humidex {entry.Value.ToString("F2")}");
+            }
+
+            double CalculateHumidex(double temperature, double humidity)
+            {
+
+                double e = 6.112 * Math.Pow(10, (7.5 * temperature) / (237.7 + temperature)) * (humidity / 100);
+                return temperature + (e - 10) / 5;
+            }
+        }
     }
+
 }
+
