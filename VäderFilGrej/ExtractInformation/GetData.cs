@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Net.WebSockets;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -14,7 +15,8 @@ namespace VäderFilGrej.ExtractInformation
 
         public Dictionary<string, (List<double> temp, List<double> humidity)> TempList(bool meny)
         {
-            string[] lines = File.ReadAllLines(@"C:\Users\noelb\Desktop\System24\Filer\tempdata5-medfel.txt");
+            //string[] lines = File.ReadAllLines(@"C:\Users\noelb\Desktop\System24\Filer\tempdata5-medfel.txt");
+            string[] lines = File.ReadAllLines(@"C:\Users\Johan\V-derFilGrej\VäderFilGrej\FileReader\tempdata5.txt");
 
             string pattern = @"(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})\s(?<time>\d{2}:\d{2}:\d{2}),(?<plats>\w+),(?<temp>\d+\.\d+),(?<humidity>\d+)";
 
@@ -74,6 +76,25 @@ namespace VäderFilGrej.ExtractInformation
                 }
             }
             return tempPerMonth;
+        }
+        public void Search()
+        {
+            Console.WriteLine("Ange datum enligt 0000-00-00");
+            var search = Console.ReadLine();
+
+            var list = TempList(false);
+            
+            foreach (var entry in list)
+            {
+                if (entry.Key == search)
+                {
+                    Console.WriteLine($"Månad:{entry.Key}, Temperaturer: {(entry.Value.temp.Sum() / entry.Value.temp.Count).ToString("F2")}" +
+                   $" Luftfuktighet: {(entry.Value.humidity.Sum() / entry.Value.humidity.Count).ToString("F2")}");
+                    Console.ReadKey();
+
+                }
+            }
+
         }
         public void Mold()
         {
