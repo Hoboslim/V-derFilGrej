@@ -9,7 +9,6 @@ namespace VäderFilGrej
             var saveData = new SaveData();
 
 
-            //saveData.tempList();
             while (true)
             {
 
@@ -27,6 +26,7 @@ namespace VäderFilGrej
                         break;
 
                     case ConsoleKey.D2:
+                        saveData.tempList();
                         break;
 
                     case ConsoleKey.Escape:
