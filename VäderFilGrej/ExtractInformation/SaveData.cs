@@ -210,7 +210,7 @@ namespace VäderFilGrej.ExtractInformation
         {
             var data = new GetData();
             bool meny = false;
-            var temp = data.TempList(meny);
+            var temp = data.TempList(meny, null);
 
             string filePath = "C:\\Users\\noelb\\Desktop\\System24\\Filer\\AutumnDay.txt";
             string filePath1 = "C:\\Users\\noelb\\Desktop\\System24\\Filer\\VinterDay.txt";
