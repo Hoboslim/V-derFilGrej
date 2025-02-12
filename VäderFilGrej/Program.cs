@@ -38,6 +38,7 @@ namespace VäderFilGrej
             {
                 var data = new GetData();
                 Console.WriteLine("Vilken data vill du se?");
+                Console.WriteLine("[1]Varmt till kallt [2]medel temp [3]Mögel [4]Tort till blött [5]Metro höst [6]Metro vinter [7]Sök [esc]Tillbacka");
 
 
                 var key = Console.ReadKey(true);
