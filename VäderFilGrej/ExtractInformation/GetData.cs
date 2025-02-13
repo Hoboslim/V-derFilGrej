@@ -85,25 +85,7 @@ namespace VäderFilGrej.ExtractInformation
             }
             return tempPerMonth;
         }
-        public void Search()
-        {
-            Console.WriteLine("Ange datum enligt 0000-00-00");
-            var search = Console.ReadLine();
-
-            var list = TempList(false, null);
-            
-            foreach (var entry in list)
-            {
-                if (entry.Key == search)
-                {
-                    Console.WriteLine($"Månad:{entry.Key}, Temperaturer: {(entry.Value.temp.Sum() / entry.Value.temp.Count).ToString("F2")}" +
-                   $" Luftfuktighet: {(entry.Value.humidity.Sum() / entry.Value.humidity.Count).ToString("F2")}");
-                    Console.ReadKey();
-
-                }
-            }
-
-        }
+       
         public void Mold()
         {
             meny = true;
