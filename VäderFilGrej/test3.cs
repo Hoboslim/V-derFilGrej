@@ -69,17 +69,23 @@ namespace VäderFilGrej
                 foreach (var entry in diff)
                 {
                     double medelSkillnad = entry.Average(d => d.Skillnad);
-                    int antalLågSkillnad = entry.Count(d => d.Skillnad < (medelSkillnad - 1));
-                    doorOpenHours += antalLågSkillnad;
-                    Console.WriteLine($"Genomsnittlig skillnad mellan Ute och Inne {entry.Key}: {medelSkillnad:F1}°C");
-                    Console.WriteLine($"Antal timmar där skillnaden är mindre än genomsnittet: {antalLågSkillnad}");
+                    int antalLågSkillnad = entry.Count(d => d.Skillnad < (medelSkillnad - 2));
 
-                    Console.WriteLine("\nTimmar med lägre än genomsnittlig skillnad:");
-                    foreach (var item in entry.Where(d => d.Skillnad < (medelSkillnad - 1)))
+                    doorOpenHours += antalLågSkillnad;
+                    if (antalLågSkillnad > 0)
                     {
-                        Console.WriteLine($"{item.Date} kl. {item.Hour}:00 - Ute: {item.UteTemp}°C, Inne: {item.InneTemp}°C, Skillnad: {item.Skillnad:F1}°C");
+                        Console.WriteLine();
+                        Console.WriteLine($"Genomsnittlig skillnad mellan Ute och Inne {entry.Key}: {medelSkillnad:F1}°C");
+                        Console.WriteLine($"Antal timmar där skillnaden är mindre än genomsnittet: {antalLågSkillnad}");
+
+                        Console.WriteLine("\nTimmar med lägre än genomsnittlig skillnad:");
+                        foreach (var item in entry.Where(d => d.Skillnad < (medelSkillnad - 2)))
+                        {
+                            Console.WriteLine($"Kl {item.Hour}:00 - Ute: {item.UteTemp}°C, Inne: {item.InneTemp}°C, Skillnad: {item.Skillnad:F1}°C");
+                        }
+                        Console.WriteLine();
+                        Console.WriteLine("----------------------------------------");
                     }
-                    Console.WriteLine("----------------------------------------");
                 }
                 Console.WriteLine($"Dörren har varit öppen öppen i totalt {doorOpenHours} timmar");
             }
