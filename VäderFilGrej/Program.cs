@@ -1,4 +1,5 @@
-﻿using VäderFilGrej.ExtractInformation;
+﻿using VäderFilGrej.Extencions;
+using VäderFilGrej.ExtractInformation;
 
 namespace VäderFilGrej
 {
@@ -65,7 +66,9 @@ namespace VäderFilGrej
                         data.vinter();
                         break;
                     case ConsoleKey.D7:
-                        data.Search();
+                        "Ange datum enligt 0000-00-00".CW();
+                        var search = Console.ReadLine();
+                        search.Search();
                         break;
                     case ConsoleKey.D8:
                         data.humIdex();
