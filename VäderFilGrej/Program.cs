@@ -23,10 +23,13 @@ namespace VäderFilGrej
                 switch (key.Key)
                 {
                     case ConsoleKey.D1:
+                        Console.Clear();
                         ReadMenu();
+                        
                         break;
 
                     case ConsoleKey.D2:
+                        Console.Clear();
                         saveData.tempList();
                         break;
 
@@ -48,32 +51,49 @@ namespace VäderFilGrej
                 {
                     case ConsoleKey.D1:
                         data.WarmCold();
+                        Console.ReadKey();
+                        Console.Clear();
                         break;
 
                     case ConsoleKey.D2:
                         data.MedTemp();
+                        Console.ReadKey();
+                        Console.Clear();
                         break;
                     case ConsoleKey.D3:
                         data.Mold();
+                        Console.ReadKey();
+                        Console.Clear();
                         break;
                     case ConsoleKey.D4:
                         data.DryWet();
+                        Console.ReadKey();
+                        Console.Clear();
                         break;
                     case ConsoleKey.D5:
                         data.Fall();
+                        Console.ReadKey();
+                        Console.Clear();
                         break;
                     case ConsoleKey.D6:
                         data.vinter();
+                        Console.ReadKey();
+                        Console.Clear();
                         break;
                     case ConsoleKey.D7:
                         "Ange datum enligt 0000-00-00".CW();
                         var search = Console.ReadLine();
                         search.Search();
+                        Console.ReadKey();
+                        Console.Clear();
                         break;
                     case ConsoleKey.D8:
                         data.humIdex();
+                        Console.ReadKey();
+                        Console.Clear();
                         break;
                     case ConsoleKey.Escape:
+                        Console.Clear();
                         return;
                 }
             }
