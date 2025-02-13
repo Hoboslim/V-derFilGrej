@@ -36,18 +36,16 @@ namespace VäderFilGrej
                 double temp = double.Parse(match.Groups["temp"].ToString(), CultureInfo.InvariantCulture);
 
                 dataList.Add(new WeatherData { Place = plats, Year = year, Month = month, Day = day, Hour = hour, Temp = temp });
-
-
-
             }
+
                 List<DifferensData> differenser = JämförTemperaturerPerTimme(dataList);
                 AnalyseraTemperaturSkillnader(differenser);
 
             static List<DifferensData> JämförTemperaturerPerTimme(List<WeatherData> data)
             {
                 var grupperadData = data
-                    .GroupBy(d => new { d.Year, d.Month, d.Day, d.Hour, d.Minute }) // Gruppera per datum, timme och minut
-                    .Where(g => g.Any(d => d.Place == "Ute") && g.Any(d => d.Place == "Inne")) // Se till att både "Ute" och "Inne" finns
+                    .GroupBy(d => new { d.Year, d.Month, d.Day, d.Hour, d.Minute })
+                    .Where(g => g.Any(d => d.Place == "Ute") && g.Any(d => d.Place == "Inne"))
                     .Select(g => new DifferensData
                     {
                         Date = g.Key.Year + "/" + g.Key.Month + "/" + g.Key.Day,
