@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace VäderFilGrej
 {
-    class test3
+    class Balkong
     {
         public void Run()
         {

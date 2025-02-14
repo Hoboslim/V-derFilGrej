@@ -3,7 +3,7 @@ using VäderFilGrej.Extencions;
 using VäderFilGrej.ExtractInformation;
 
 var saveData = new SaveData();
-var test = new test3();
+var balkong = new Balkong();
 
 
 
@@ -90,7 +90,7 @@ void ReadMenu()
             Console.Clear();
             break;
         case ConsoleKey.D9:
-            test.Run();
+            balkong.Run();
             Console.ReadKey();
             Console.Clear();
             break;
