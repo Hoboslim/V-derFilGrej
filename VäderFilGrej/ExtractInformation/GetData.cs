@@ -15,9 +15,9 @@ namespace VäderFilGrej.ExtractInformation
 
         public Dictionary<string, (List<double> temp, List<double> humidity)> TempList(bool meny, int? ineUte )
         {
-            //string[] lines = File.ReadAllLines(@"C:\Users\noelb\Desktop\System24\Filer\tempdata5-medfel.txt");
+            string[] lines = File.ReadAllLines(@"C:\Users\noelb\Desktop\System24\Filer\tempdata5-medfel.txt");
             //string[] lines = File.ReadAllLines(@"C:\Users\Johan\V-derFilGrej\VäderFilGrej\FileReader\tempdata5.txt");
-            string[] lines = File.ReadAllLines(@"C:\Users\n01re\Source\Repos\V-derFilGrej\VäderFilGrej\FileReader\tempdata5.txt");
+            //string[] lines = File.ReadAllLines(@"C:\Users\n01re\Source\Repos\V-derFilGrej\VäderFilGrej\FileReader\tempdata5.txt");
 
             string pattern = @"(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})\s(?<time>\d{2}:\d{2}:\d{2}),(?<plats>\w+),(?<temp>\d+\.\d+),(?<humidity>\d+)";
 
@@ -160,20 +160,36 @@ namespace VäderFilGrej.ExtractInformation
                 Console.WriteLine($"Månad:{temp.Key}, Temperaturer: {temp.Sum.ToString("F2")}");
             }
         }
-        public void MedTemp()
+
+        public delegate double CalculationDelegate(List<double> values);
+        public void MedTemp(CalculationDelegate calculationMethod)
         {
             meny = true;
             var tempPerMonth = TempList(meny, null);
 
             foreach(var entry in tempPerMonth)
             {
-               Console.WriteLine($"Månad:{entry.Key}, Temperaturer: {(entry.Value.temp.Sum() / entry.Value.temp.Count).ToString("F2")}" +
-                   $" Luftfuktighet: {(entry.Value.humidity.Sum() / entry.Value.humidity.Count).ToString("F2")}");
+                double avgTemp = calculationMethod(entry.Value.temp);
+                double avgHumidity = calculationMethod(entry.Value.humidity);
+                Console.WriteLine($"{entry.Key}, Temperatur: {avgTemp:F2}, Luftfuktighet: {avgHumidity:F2}");
 
-                
-                
-                
             }
+        }
+
+        public double CalculateAverage(List<double> Values)
+        {
+            return Values.Count > 0 ? Values.Sum() / Values.Count() : 0;
+        }
+        public double CalculateMedian(List<double> values)
+        {
+            if (values.Count == 0) return 0;
+            var sorted = values.OrderBy(x => x).ToList();
+            int mid = sorted.Count / 2;
+            return sorted.Count % 2 == 0 ? (sorted[mid - 1] + sorted[mid]) / 2.0 : sorted[mid];
+        }
+        public double CalculateMax(List<double> Values)
+        {
+            return Values.Count > 0 ? Values.Max() : 0;
         }
 
         public void Fall()

@@ -39,7 +39,7 @@ void ReadMenu()
     Console.Clear();
     var data = new GetData();
     Console.WriteLine("Vilken data vill du se?");
-    Console.WriteLine("[1]Varmt till kallt [2]medel temp [3]Mögel [4]Tort till blött [5]Metro höst [6]Metro vinter \n[7]Sök [8]Humidex [9]Balkongen [esc]Tillbacka");
+    Console.WriteLine("[1]Varmt till kallt [2]Temp/Luftfuktighet värden [3]Mögel [4]Tort till blött [5]Metro höst [6]Metro vinter \n[7]Sök [8]Humidex [9]Balkongen [esc]Tillbacka");
 
 
     var key = Console.ReadKey(true);
@@ -53,9 +53,27 @@ void ReadMenu()
             break;
 
         case ConsoleKey.D2:
-            data.MedTemp();
-            Console.ReadKey();
-            Console.Clear();
+            Console.WriteLine("Tryck A för Medelvärde, B för Median och C för Maxvärde: ");
+            var input = Console.ReadKey(true);
+            switch (input.Key)
+            {
+                case ConsoleKey.A:
+                    Console.WriteLine("Du har valt Medelvärde ");
+                    data.MedTemp(data.CalculateAverage);
+                    Console.ReadKey(true);
+                    break;
+
+                case ConsoleKey.B:
+                    Console.WriteLine("Du har valt Medianvärde ");
+                    data.MedTemp(data.CalculateMedian);
+                    Console.ReadKey(true);
+                    break;
+                case ConsoleKey.C:
+                    Console.WriteLine("Du har valt Maxvärde ");
+                    data.MedTemp(data.CalculateMax);
+                    Console.ReadKey(true);
+                    break;
+            }
             break;
         case ConsoleKey.D3:
             data.Mold();
