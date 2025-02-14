@@ -13,10 +13,11 @@ namespace VäderFilGrej.ExtractInformation
     {
         bool meny = false;
 
-        public Dictionary<string, (List<double> temp, List<double> humidity)> TempList(bool meny)
+        public Dictionary<string, (List<double> temp, List<double> humidity)> TempList(bool meny, int? ineUte )
         {
-            string[] lines = File.ReadAllLines(@"C:\Users\noelb\Desktop\System24\Filer\tempdata5-medfel.txt");
+            //string[] lines = File.ReadAllLines(@"C:\Users\noelb\Desktop\System24\Filer\tempdata5-medfel.txt");
             //string[] lines = File.ReadAllLines(@"C:\Users\Johan\V-derFilGrej\VäderFilGrej\FileReader\tempdata5.txt");
+            string[] lines = File.ReadAllLines(@"C:\Users\n01re\Source\Repos\V-derFilGrej\VäderFilGrej\FileReader\tempdata5.txt");
 
             string pattern = @"(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})\s(?<time>\d{2}:\d{2}:\d{2}),(?<plats>\w+),(?<temp>\d+\.\d+),(?<humidity>\d+)";
 
@@ -45,7 +46,14 @@ namespace VäderFilGrej.ExtractInformation
             }
             else 
             {
-                val = "Ute";
+                if (ineUte == 1)
+                {
+                    val = "Inne";
+                }
+                else
+                {
+                    val = "Ute";
+                }
             }
 
             foreach (string line in lines)
@@ -77,32 +85,14 @@ namespace VäderFilGrej.ExtractInformation
             }
             return tempPerMonth;
         }
-        public void Search()
-        {
-            Console.WriteLine("Ange datum enligt 0000-00-00");
-            var search = Console.ReadLine();
-
-            var list = TempList(false);
-            
-            foreach (var entry in list)
-            {
-                if (entry.Key == search)
-                {
-                    Console.WriteLine($"Månad:{entry.Key}, Temperaturer: {(entry.Value.temp.Sum() / entry.Value.temp.Count).ToString("F2")}" +
-                   $" Luftfuktighet: {(entry.Value.humidity.Sum() / entry.Value.humidity.Count).ToString("F2")}");
-                    Console.ReadKey();
-
-                }
-            }
-
-        }
+       
         public void Mold()
         {
             meny = true;
             double risk;
             Dictionary<string, double> mold = new Dictionary<string, double>(); 
 
-            var tempPerday = TempList(meny);
+            var tempPerday = TempList(meny, null);
             foreach (var entry in tempPerday)
             {
                 var hum = (entry.Value.humidity.Sum() / entry.Value.humidity.Count);
@@ -136,7 +126,7 @@ namespace VäderFilGrej.ExtractInformation
         public void DryWet()
         {
             meny = true;
-            var tempDay = TempList(meny);
+            var tempDay = TempList(meny, null);
 
             var groupedSum = tempDay
                 .GroupBy(x => x.Key)
@@ -155,7 +145,7 @@ namespace VäderFilGrej.ExtractInformation
         public void WarmCold()
         {
             meny = true;
-            var tempPerDay = TempList(meny);
+            var tempPerDay = TempList(meny, null);
 
                 var groupedSum = tempPerDay
                 .GroupBy(x => x.Key)
@@ -173,7 +163,7 @@ namespace VäderFilGrej.ExtractInformation
         public void MedTemp()
         {
             meny = true;
-            var tempPerMonth = TempList(meny);
+            var tempPerMonth = TempList(meny, null);
 
             foreach(var entry in tempPerMonth)
             {
@@ -181,7 +171,7 @@ namespace VäderFilGrej.ExtractInformation
                    $" Luftfuktighet: {(entry.Value.humidity.Sum() / entry.Value.humidity.Count).ToString("F2")}");
 
                 
-                var hum = (entry.Value.humidity.Sum() / entry.Value.humidity.Count);
+                
                 
             }
         }
@@ -189,7 +179,7 @@ namespace VäderFilGrej.ExtractInformation
         public void Fall()
         {
             meny = false;
-            var tempPerWeek = TempList(meny);
+            var tempPerWeek = TempList(meny, null);
             int daysInRow = 0;
            
             string day1 = "ingenDag";
@@ -225,7 +215,7 @@ namespace VäderFilGrej.ExtractInformation
         public void vinter()
         {
             meny = false;
-            var tempPerWeek = TempList(meny);
+            var tempPerWeek = TempList(meny, null);
             int daysInRow2 = 0;
             string day2 = "ingenDag";
             foreach (var entry in tempPerWeek)
@@ -255,6 +245,52 @@ namespace VäderFilGrej.ExtractInformation
                 }
             }
         }
+        public void humIdex() 
+        {
+            var humiIndex = TempList(false, null);
+            var list = new Dictionary<string, double>();
+            foreach(var entry in humiIndex) 
+            {
+                var hum = (entry.Value.humidity.Sum() / entry.Value.humidity.Count);
+                var temp = (entry.Value.temp.Sum() / entry.Value.temp.Count);
+                var humidIndex = CalculateHumidex(temp, hum);
+                
+                list.Add(entry.Key, humidIndex);
+
+            }
+
+            var top10 = list.OrderByDescending(ex => ex.Value).Take(10);
+            var best5 = top10.OrderBy(ex => ex.Value).Take(5);
+            var bottom5 = list.OrderBy(ex => ex.Value).Take(5);
+
+            Console.WriteLine("Bekvämaste Dagarna");
+            foreach (var entry in best5)
+            {
+                Console.WriteLine($"{entry.Key}, Humidex {entry.Value.ToString("F2")}" );
+            }
+            Console.WriteLine("Obekvemäste dagarna");
+            foreach (var entry in bottom5) 
+            {
+                Console.WriteLine($"{entry.Key}, Humidex {entry.Value.ToString("F2")}");
+            }
+
+            double CalculateHumidex(double temperature, double humidity)
+            {
+
+                double e = 6.112 * Math.Pow(10, (7.5 * temperature) / (237.7 + temperature)) * (humidity / 100);
+                return temperature + (e - 10) / 5;
+            }
+        }
+        //public void Balkong()
+        //{
+        //    var Inne = TempList(false, 1);
+        //    var ute = TempList(false, null);
+            
+
+
+        //}
 
     }
+
 }
+
