@@ -12,12 +12,22 @@ namespace VäderFilGrej.ExtractInformation
     internal class GetData
     {
         bool meny = false;
+        string[] lines;
 
         public Dictionary<string, (List<double> temp, List<double> humidity)> TempList(bool meny, int? ineUte )
         {
-            string[] lines = File.ReadAllLines(@"C:\Users\noelb\Desktop\System24\Filer\tempdata5-medfel.txt");
-            //string[] lines = File.ReadAllLines(@"C:\Users\Johan\V-derFilGrej\VäderFilGrej\FileReader\tempdata5.txt");
-            //string[] lines = File.ReadAllLines(@"C:\Users\n01re\Source\Repos\V-derFilGrej\VäderFilGrej\FileReader\tempdata5.txt");
+            try
+            { 
+                lines = File.ReadAllLines(@"C:\Users\noelb\Desktop\System24\Filer\tempdata5-medfel.txt");
+                //string[] lines = File.ReadAllLines(@"C:\Users\Johan\V-derFilGrej\VäderFilGrej\FileReader\tempdata5.txt");
+                //string[] lines = File.ReadAllLines(@"C:\Users\n01re\Source\Repos\V-derFilGrej\VäderFilGrej\FileReader\tempdata5.txt");
+            }
+            catch
+            {
+                Console.Clear();
+                Console.WriteLine("Misslyckades med läsning av fil, se till att filens sökväg är rätt.");
+                Environment.Exit(1);
+            }
 
             string pattern = @"(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})\s(?<time>\d{2}:\d{2}:\d{2}),(?<plats>\w+),(?<temp>\d+\.\d+),(?<humidity>\d+)";
 
@@ -64,13 +74,23 @@ namespace VäderFilGrej.ExtractInformation
                 {
                     if (temp.Groups["month"].ToString() == "05" || temp.Groups["month"].ToString() == "01")
                     {
-
+                        continue;
                     }
-                    else
+                    try
                     {
                         string yearMonth = $"{temp.Groups["year"].Value}-{temp.Groups["month"].Value}-{temp.Groups["day"].Value}";
 
+                        if (int.Parse(temp.Groups["month"].Value) > 12)
+                        {
+                            throw new ArgumentOutOfRangeException($"Månad {temp.Groups["month"].Value} finns inte");
+                        }
+
                         double tempCheck = double.Parse(temp.Groups["temp"].Value, CultureInfo.InvariantCulture);
+
+                        if (tempCheck > 30 || tempCheck < -20)
+                        {
+                            throw new ArgumentOutOfRangeException($"Orimlig temperatur: {tempCheck}°C på {yearMonth}");
+                        }
 
                         double humidityCheck = double.Parse(temp.Groups["humidity"].Value);
 
@@ -80,6 +100,10 @@ namespace VäderFilGrej.ExtractInformation
                         }
                         tempPerMonth[yearMonth].tempList.Add(tempCheck);
                         tempPerMonth[yearMonth].humidityList.Add(humidityCheck);
+                    }
+                    catch(Exception ex)
+                    {
+                        Console.WriteLine($"Fel vid bearbetning av rad: {line}. {ex.Message}");
                     }
                 }
             }

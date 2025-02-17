@@ -2,8 +2,6 @@
 using VäderFilGrej.Extencions;
 using VäderFilGrej.ExtractInformation;
 
-var saveData = new SaveData();
-var balkong = new Balkong();
 
 
 
@@ -25,6 +23,7 @@ while (true)
             break;
 
         case ConsoleKey.D2:
+            var saveData = new SaveData();
             Console.Clear();
             saveData.tempList();
             break;
@@ -108,6 +107,7 @@ void ReadMenu()
             Console.Clear();
             break;
         case ConsoleKey.D9:
+            var balkong = new Balkong();
             balkong.Run();
             Console.ReadKey();
             Console.Clear();
