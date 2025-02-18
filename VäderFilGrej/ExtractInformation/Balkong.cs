@@ -18,16 +18,16 @@ namespace VäderFilGrej.ExtractInformation
         {
             try
             {
-                //string[] lines = File.ReadAllLines(@"C:\Users\Johan\V-derFilGrej\VäderFilGrej\FileReader\tempdata5.txt");
-                lines = File.ReadAllLines(@"C:\Users\n01re\Source\Repos\V-derFilGrej\VäderFilGrej\FileReader\tempdata5.txt");
+                string[] lines = File.ReadAllLines(@"C:\Users\Johan\V-derFilGrej\VäderFilGrej\FileReader\tempdata5.txt");
+                //lines = File.ReadAllLines(@"C:\Users\n01re\Source\Repos\V-derFilGrej\VäderFilGrej\FileReader\tempdata5.txt");
             }
             catch
             {
                 Console.WriteLine("Misslyckades med läsning av fil, se till att filens sökväg är rätt.");
             }
-                string pattern = @"(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})\s(?<hour>\d{2}):(?<minute>\d{2}):(?<secound>\d{2}),(?<plats>\w+),(?<temp>\d+\.\d+),(?<humidity>\d+)";
+            string pattern = @"(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})\s(?<hour>\d{2}):(?<minute>\d{2}):(?<secound>\d{2}),(?<plats>\w+),(?<temp>\d+\.\d+),(?<humidity>\d+)";
 
-                List<WeatherData> dataList = new List<WeatherData>();
+            List<WeatherData> dataList = new List<WeatherData>();
             foreach (var line in lines)
             {
                 try
@@ -57,63 +57,63 @@ namespace VäderFilGrej.ExtractInformation
                     }
                     dataList.Add(new WeatherData { Place = plats, Year = year, Month = month, Day = day, Hour = hour, Temp = temp });
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     Console.WriteLine($"Ett fel inträffade på linje {line}: {ex.Message}");
                 }
             }
 
-                List<DifferensData> differenser = JämförTemperaturerPerTimme(dataList);
-                AnalyseraTemperaturSkillnader(differenser);
+            List<DifferensData> differenser = JämförTemperaturerPerTimme(dataList);
+            AnalyseraTemperaturSkillnader(differenser);
 
-                static List<DifferensData> JämförTemperaturerPerTimme(List<WeatherData> data)
-                {
-                    var grupperadData = data
-                        .GroupBy(d => new { d.Year, d.Month, d.Day, d.Hour, d.Minute })
-                        .Where(g => g.Any(d => d.Place == "Ute") && g.Any(d => d.Place == "Inne"))
-                        .Select(g => new DifferensData
-                        {
-                            Date = g.Key.Year + "/" + g.Key.Month + "/" + g.Key.Day,
-                            Hour = g.Key.Hour,
-                            Minute = g.Key.Minute,
-                            UteTemp = g.FirstOrDefault(d => d.Place == "Ute")?.Temp ?? double.NaN,
-                            InneTemp = g.FirstOrDefault(d => d.Place == "Inne")?.Temp ?? double.NaN,
-                            Skillnad = Math.Abs((g.FirstOrDefault(d => d.Place == "Ute")?.Temp ?? 0) - (g.FirstOrDefault(d => d.Place == "Inne")?.Temp ?? 0))
-                        }).ToList();
-
-                    return grupperadData;
-                }
-                static void AnalyseraTemperaturSkillnader(List<DifferensData> differenser)
-                {
-                    var diff = differenser.GroupBy(g => g.Date);
-
-                    int doorOpenHours = 0;
-
-                    foreach (var entry in diff)
+            static List<DifferensData> JämförTemperaturerPerTimme(List<WeatherData> data)
+            {
+                var grupperadData = data
+                    .GroupBy(d => new { d.Year, d.Month, d.Day, d.Hour, d.Minute })
+                    .Where(g => g.Any(d => d.Place == "Ute") && g.Any(d => d.Place == "Inne"))
+                    .Select(g => new DifferensData
                     {
-                        double medelSkillnad = entry.Average(d => d.Skillnad);
-                        int antalLågSkillnad = entry.Count(d => d.Skillnad < medelSkillnad - 2);
+                        Date = g.Key.Year + "/" + g.Key.Month + "/" + g.Key.Day,
+                        Hour = g.Key.Hour,
+                        Minute = g.Key.Minute,
+                        UteTemp = g.FirstOrDefault(d => d.Place == "Ute")?.Temp ?? double.NaN,
+                        InneTemp = g.FirstOrDefault(d => d.Place == "Inne")?.Temp ?? double.NaN,
+                        Skillnad = Math.Abs((g.FirstOrDefault(d => d.Place == "Ute")?.Temp ?? 0) - (g.FirstOrDefault(d => d.Place == "Inne")?.Temp ?? 0))
+                    }).ToList();
 
-                        doorOpenHours += antalLågSkillnad;
-                        if (antalLågSkillnad > 0)
+                return grupperadData;
+            }
+            static void AnalyseraTemperaturSkillnader(List<DifferensData> differenser)
+            {
+                var diff = differenser.GroupBy(g => g.Date);
+
+                int doorOpenHours = 0;
+
+                foreach (var entry in diff)
+                {
+                    double medelSkillnad = entry.Average(d => d.Skillnad);
+                    int antalLågSkillnad = entry.Count(d => d.Skillnad < medelSkillnad - 2);
+
+                    doorOpenHours += antalLågSkillnad;
+                    if (antalLågSkillnad > 0)
+                    {
+                        Console.WriteLine();
+                        Console.WriteLine($"Genomsnittlig skillnad mellan Ute och Inne {entry.Key}: {medelSkillnad:F1}°C");
+                        Console.WriteLine($"Antal timmar där skillnaden är mindre än genomsnittet: {antalLågSkillnad}");
+
+                        Console.WriteLine("\nTimmar med lägre än genomsnittlig skillnad:");
+                        foreach (var item in entry.Where(d => d.Skillnad < medelSkillnad - 2))
                         {
-                            Console.WriteLine();
-                            Console.WriteLine($"Genomsnittlig skillnad mellan Ute och Inne {entry.Key}: {medelSkillnad:F1}°C");
-                            Console.WriteLine($"Antal timmar där skillnaden är mindre än genomsnittet: {antalLågSkillnad}");
-
-                            Console.WriteLine("\nTimmar med lägre än genomsnittlig skillnad:");
-                            foreach (var item in entry.Where(d => d.Skillnad < medelSkillnad - 2))
-                            {
-                                Console.WriteLine($"Kl {item.Hour}:00 - Ute: {item.UteTemp}°C, Inne: {item.InneTemp}°C, Skillnad: {item.Skillnad:F1}°C");
-                            }
-                            Console.WriteLine();
-                            Console.WriteLine("----------------------------------------");
+                            Console.WriteLine($"Kl {item.Hour}:00 - Ute: {item.UteTemp}°C, Inne: {item.InneTemp}°C, Skillnad: {item.Skillnad:F1}°C");
                         }
+                        Console.WriteLine();
+                        Console.WriteLine("----------------------------------------");
                     }
-                    Console.WriteLine($"Dörren har varit öppen öppen i totalt {doorOpenHours} timmar");
                 }
+                Console.WriteLine($"Dörren har varit öppen öppen i totalt {doorOpenHours} timmar");
             }
         }
+    }
         class WeatherData
         {
             public string Place { get; set; }
@@ -133,5 +133,5 @@ namespace VäderFilGrej.ExtractInformation
             public double InneTemp { get; set; }
             public double Skillnad { get; set; }
         }
-    }
 }
+
