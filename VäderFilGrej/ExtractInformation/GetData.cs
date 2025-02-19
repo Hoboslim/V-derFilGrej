@@ -76,15 +76,15 @@ namespace VäderFilGrej.ExtractInformation
                     {
                         continue;
                     }
+                    if (int.Parse(temp.Groups["month"].Value) > 12 || int.Parse(temp.Groups["day"].Value) > 31)
+                    {
+                        //throw new ArgumentOutOfRangeException($"Månad {temp.Groups["month"].Value} finns inte");
+                        continue;
+                    }
                     try
                     {
                         string yearMonth = $"{temp.Groups["year"].Value}-{temp.Groups["month"].Value}-{temp.Groups["day"].Value}";
 
-                        if (int.Parse(temp.Groups["month"].Value) > 12)
-                        {
-                            //throw new ArgumentOutOfRangeException($"Månad {temp.Groups["month"].Value} finns inte");
-                            continue;
-                        }
 
                         double tempCheck = double.Parse(temp.Groups["temp"].Value, CultureInfo.InvariantCulture);
 
