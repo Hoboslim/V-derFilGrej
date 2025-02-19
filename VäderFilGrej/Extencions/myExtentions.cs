@@ -28,7 +28,10 @@ namespace VäderFilGrej.Extencions
                     Console.WriteLine($"Månad:{entry.Key}, Temperaturer: {(entry.Value.temp.Sum() / entry.Value.temp.Count).ToString("F2")}" +
                    $" Luftfuktighet: {(entry.Value.humidity.Sum() / entry.Value.humidity.Count).ToString("F2")}");
                     Console.ReadKey();
-
+                }
+                else
+                {
+                    Console.WriteLine($"Ingen information hittades på datumet: {input}");
                 }
             }
 
