@@ -38,17 +38,16 @@ namespace VäderFilGrej.ExtractInformation
                     string plats = match.Groups["plats"].ToString();
                     string year = match.Groups["year"].ToString();
                     string month = match.Groups["month"].ToString();
-
-                    if (int.Parse(month) > 12)
-                    {
-                        //throw new ArgumentOutOfRangeException($"Månaden {month} finns inte");
-                        continue;
-                    }
-
                     string day = match.Groups["day"].ToString();
                     string hour = match.Groups["hour"].ToString();
                     string minute = match.Groups["minute"].ToString();
                     string secound = match.Groups["secound"].ToString();
+
+                    if (int.Parse(month) > 12 || int.Parse(day) > 31)
+                    {
+                        //throw new ArgumentOutOfRangeException($"Månaden {month} finns inte");
+                        continue;
+                    }
 
                     double temp = double.Parse(match.Groups["temp"].ToString(), CultureInfo.InvariantCulture);
 
