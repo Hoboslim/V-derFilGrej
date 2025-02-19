@@ -82,14 +82,16 @@ namespace VäderFilGrej.ExtractInformation
 
                         if (int.Parse(temp.Groups["month"].Value) > 12)
                         {
-                            throw new ArgumentOutOfRangeException($"Månad {temp.Groups["month"].Value} finns inte");
+                            //throw new ArgumentOutOfRangeException($"Månad {temp.Groups["month"].Value} finns inte");
+                            continue;
                         }
 
                         double tempCheck = double.Parse(temp.Groups["temp"].Value, CultureInfo.InvariantCulture);
 
                         if (tempCheck > 30 || tempCheck < -20)
                         {
-                            throw new ArgumentOutOfRangeException($"Orimlig temperatur: {tempCheck}°C på {yearMonth}");
+                            //throw new ArgumentOutOfRangeException($"Orimlig temperatur: {tempCheck}°C på {yearMonth}");
+                            continue;
                         }
 
                         double humidityCheck = double.Parse(temp.Groups["humidity"].Value);

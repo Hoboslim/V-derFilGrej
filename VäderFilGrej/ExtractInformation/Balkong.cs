@@ -18,7 +18,7 @@ namespace VäderFilGrej.ExtractInformation
         {
             try
             {
-                string[] lines = File.ReadAllLines(@"C:\Users\Johan\V-derFilGrej\VäderFilGrej\FileReader\tempdata5.txt");
+                lines = File.ReadAllLines(@"C:\Users\Johan\V-derFilGrej\VäderFilGrej\FileReader\tempdata5.txt");
                 //lines = File.ReadAllLines(@"C:\Users\n01re\Source\Repos\V-derFilGrej\VäderFilGrej\FileReader\tempdata5.txt");
             }
             catch
@@ -41,7 +41,8 @@ namespace VäderFilGrej.ExtractInformation
 
                     if (int.Parse(month) > 12)
                     {
-                        throw new ArgumentOutOfRangeException($"Månaden {month} finns inte");
+                        //throw new ArgumentOutOfRangeException($"Månaden {month} finns inte");
+                        continue;
                     }
 
                     string day = match.Groups["day"].ToString();
@@ -53,7 +54,8 @@ namespace VäderFilGrej.ExtractInformation
 
                     if (temp > 30 || temp < -20)
                     {
-                        throw new ArgumentOutOfRangeException($"Orimlig temperatur: {temp}°C");
+                        //throw new ArgumentOutOfRangeException($"Orimlig temperatur: {temp}°C");
+                        continue;
                     }
                     dataList.Add(new WeatherData { Place = plats, Year = year, Month = month, Day = day, Hour = hour, Temp = temp });
                 }
