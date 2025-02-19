@@ -130,9 +130,11 @@ namespace VäderFilGrej.ExtractInformation
 
         public void SaveMedelTemp(Dictionary<string, (List<double> temp, List<double> humidity)> temp, ConsoleKeyInfo key)
         {
-            string filePath = "C:\\Users\\noelb\\Desktop\\System24\\Filer\\medelTempInne.txt";
-            string filePath1 = "C:\\Users\\noelb\\Desktop\\System24\\Filer\\medelTempUte.txt";
+            //string filePath = "C:\\Users\\noelb\\Desktop\\System24\\Filer\\medelTempInne.txt";
+            //string filePath1 = "C:\\Users\\noelb\\Desktop\\System24\\Filer\\medelTempUte.txt";
 
+            string filePath = "C:\\Users\\n01re\\Desktop\\kursen\\arkitektur\\medelTempInne.txt";
+            string filePath1 = "C:\\Users\\n01re\\Desktop\\kursen\\arkitektur\\medelTempUte.txt";
             foreach (var entry in temp)
             {
                 if (entry.Key == "2016-13")
@@ -154,8 +156,11 @@ namespace VäderFilGrej.ExtractInformation
         }
         public void SaveAvgHumidity(Dictionary<string, (List<double> temp, List<double> humidity)> temp, ConsoleKeyInfo key)
         {
-            string filePath = "C:\\Users\\noelb\\Desktop\\System24\\Filer\\avgHumidityInne.txt";
-            string filePath1 = "C:\\Users\\noelb\\Desktop\\System24\\Filer\\avgHumidityUte.txt";
+            //string filePath = "C:\\Users\\noelb\\Desktop\\System24\\Filer\\avgHumidityInne.txt";
+            //string filePath1 = "C:\\Users\\noelb\\Desktop\\System24\\Filer\\avgHumidityUte.txt";
+
+            string filePath = "C:\\Users\\n01re\\Desktop\\kursen\\arkitektur\\avgHumidityInne.txt";
+            string filePath1 = "C:\\Users\\n01re\\Desktop\\kursen\\arkitektur\\avgHumidityUte.txt";
 
             foreach (var entry in temp)
             {
@@ -178,8 +183,11 @@ namespace VäderFilGrej.ExtractInformation
         }
         public void avgMold(Dictionary<string, (List<double> temp, List<double> humidity)> temp, ConsoleKeyInfo key)
         {
-            string filePath = "C:\\Users\\noelb\\Desktop\\System24\\Filer\\avgMoldInne.txt";
-            string filePath1 = "C:\\Users\\noelb\\Desktop\\System24\\Filer\\avgMoldUte.txt";
+            //string filePath = "C:\\Users\\noelb\\Desktop\\System24\\Filer\\avgMoldInne.txt";
+            //string filePath1 = "C:\\Users\\noelb\\Desktop\\System24\\Filer\\avgMoldUte.txt";
+
+            string filePath = "C:\\Users\\n01re\\Desktop\\kursen\\arkitektur\\avgMoldInne.txt";
+            string filePath1 = "C:\\Users\\n01re\\Desktop\\kursen\\arkitektur\\avgMoldUte.txt";
 
             double risk;
             Dictionary<string, double> mold = new Dictionary<string, double>();
@@ -239,8 +247,11 @@ namespace VäderFilGrej.ExtractInformation
             bool meny = false;
             var temp = data.TempList(meny, null);
 
-            string filePath = "C:\\Users\\noelb\\Desktop\\System24\\Filer\\AutumnDay.txt";
-            string filePath1 = "C:\\Users\\noelb\\Desktop\\System24\\Filer\\VinterDay.txt";
+            //string filePath = "C:\\Users\\noelb\\Desktop\\System24\\Filer\\AutumnDay.txt";
+            //string filePath1 = "C:\\Users\\noelb\\Desktop\\System24\\Filer\\VinterDay.txt";
+
+            string filePath = "C:\\Users\\n01re\\Desktop\\kursen\\arkitektur\\AutumnDay.txt";
+            string filePath1 = "C:\\Users\\n01re\\Desktop\\kursen\\arkitektur\\VinterDay.txt";
 
             Console.WriteLine("Tryck H för Höst");
             Console.WriteLine("Tryck V för Vinter");
